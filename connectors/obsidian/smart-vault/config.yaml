@@ -1,0 +1,40 @@
+# Embedded Smart Vault Configuration
+# ====================================
+# Customize folder paths and behavior for the smart ingest pipeline.
+# All paths are relative to your Obsidian vault root.
+
+# Your Obsidian vault root (absolute path)
+# Set during setup, or edit manually
+vault_path: ""
+
+# Folder paths (relative to vault root)
+folders:
+  inbox: "00_Inbox"
+  dashboards: "01_Dashboards"
+  voice_memos: "02_Voice_Memos"
+  meetings: "02_Voice_Memos/Meetings"
+  general: "02_Voice_Memos/General"
+  people: "03_People"
+  ideas: "04_Resources/Ideas"
+  budget: "04_Resources/Budget"
+  templates: "99_Templates"
+
+# People directory file (relative to this config file)
+people_file: "vault-template/people.yaml"
+
+# Category routing
+# Maps memo categories to vault destinations
+routing:
+  Meeting: "meetings"      # → 02_Voice_Memos/Meetings/ or person 1:1 file
+  People: "meetings"       # → same as Meeting (person-detected)
+  Idea: "ideas"            # → 04_Resources/Ideas/
+  Budget: "budget"         # → 04_Resources/Budget/
+  ToDo: "inbox"            # → 00_Inbox/ (with checkboxes)
+  Other: "general"         # → 02_Voice_Memos/General/
+
+# Tags added to all ingested files
+default_tags:
+  - voice-memo
+
+# Maximum action items extracted from a ToDo memo
+max_action_items: 10

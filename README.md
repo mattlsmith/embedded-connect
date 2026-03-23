@@ -45,8 +45,131 @@ Your data is fetched through a secure API that verifies your identity and return
 
 | Connector | Description | Path |
 |-----------|-------------|------|
-| **Obsidian** | Markdown files with YAML frontmatter, organized by month | `connectors/obsidian/` |
+| **Obsidian (Simple)** | Markdown files with YAML frontmatter, organized by month | `connectors/obsidian/export.py` |
+| **Obsidian (Smart Vault)** | Full vault system with dashboards, person routing, 1:1 files | `connectors/obsidian/smart-vault/` |
 | **JSON Export** | Full data dump as JSON — great for custom integrations | `connectors/json-export/` |
+
+---
+
+## Smart Vault — Obsidian Power Setup
+
+A complete Obsidian knowledge management system that automatically routes your voice memos to the right place, manages 1:1 files for your team, and provides live dashboards.
+
+### What You Get
+
+- **Auto-routing** — Meetings go to person 1:1 files, ideas to an Ideas folder, ToDos to your inbox with checkboxes
+- **Person detection** — Mentions of people in your memos are matched to their 1:1 file
+- **1:1 file management** — Each person gets a structured file with Action Items, Meeting Notes (newest-first), and Rapport sections
+- **Dataview dashboards** — Action Dashboard, 1:1 Dashboard, and Rapport Dashboard that auto-aggregate from your vault
+- **File normalization** — Person files maintain canonical section ordering, safe to run repeatedly
+- **Incremental sync** — Only fetches new memos since last run
+- **Deduplication** — Never ingests the same memo twice
+
+### Quick Start
+
+```bash
+# 1. Set up your vault structure
+cd connectors/obsidian/smart-vault
+python setup.py
+
+# 2. Edit people.yaml in your vault — add your team
+# 3. Install the Dataview plugin in Obsidian
+
+# 4. Dry run (preview routing without writing)
+python ingest.py --email you@example.com --dry-run
+
+# 5. Execute
+python ingest.py --email you@example.com --execute
+
+# 6. Incremental sync (subsequent runs)
+python ingest.py --email you@example.com --execute --incremental
+```
+
+### Vault Structure
+
+```
+your-vault/
+├── 00_Inbox/              ← ToDo items with checkboxes
+├── 01_Dashboards/
+│   ├── Action Dashboard   ← Aggregates all open tasks
+│   ├── 1on1 Dashboard     ← Recent meetings, all people
+│   └── Rapport Dashboard  ← Personal details reference
+├── 02_Voice_Memos/
+│   ├── Meetings/          ← Standalone meeting files
+│   └── General/           ← Other/uncategorized memos
+├── 03_People/
+│   └── {Team}/
+│       └── Person Name.md ← 1:1 file (auto-created)
+├── 04_Resources/
+│   ├── Ideas/             ← Idea memos (article-spark format)
+│   └── Budget/            ← Budget/forecast notes
+├── 99_Templates/
+│   └── Template - 1on1 Person.md
+└── people.yaml            ← Your team directory
+```
+
+### Routing Logic
+
+| Category | Destination | Behavior |
+|----------|-------------|----------|
+| **Meeting / People** | Person 1:1 file | Appends to `## Meeting Notes` if one person detected |
+| **Meeting / People** | `02_Voice_Memos/Meetings/` | Creates standalone file if no person or multiple people |
+| **Idea** | `04_Resources/Ideas/` | Article-spark format with summary + transcription |
+| **Budget** | `04_Resources/Budget/` | Budget note format |
+| **ToDo** | `00_Inbox/` | Extracts action items as `- [ ]` checkboxes |
+| **Other** | `02_Voice_Memos/General/` | General memo format |
+
+### People Directory (`people.yaml`)
+
+Define your team so the pipeline can route memos to the right person:
+
+```yaml
+me:
+  name: "Your Name"
+
+people:
+  - name: "Jane Doe"
+    nickname: ["jane"]
+    team: "Engineering"
+    role: "Senior Engineer"
+    vault_path: "03_People/Engineering/Jane Doe.md"
+
+  - name: "Bob Wilson"
+    nickname: ["bob"]
+    team: "Design"
+    role: "Lead Designer"
+    vault_path: "03_People/Design/Bob Wilson.md"
+```
+
+### Configuration (`config.yaml`)
+
+Customize folder paths, routing, and behavior:
+
+```yaml
+vault_path: "/path/to/your/vault"
+
+folders:
+  inbox: "00_Inbox"
+  meetings: "02_Voice_Memos/Meetings"
+  general: "02_Voice_Memos/General"
+  people: "03_People"
+  ideas: "04_Resources/Ideas"
+  budget: "04_Resources/Budget"
+
+max_action_items: 10
+```
+
+### CLI Options
+
+```
+--email EMAIL        Your Embedded account email (required)
+--execute            Write files (default is dry run)
+--incremental        Only fetch memos since last run
+--category CATEGORY  Filter: Meeting, Idea, ToDo, People, Budget, Other
+--memo-id ID         Process a single memo by ID
+```
+
+---
 
 ## Python SDK (`embedded.py`)
 
@@ -166,16 +289,22 @@ Ideas for connectors:
 
 ```
 embedded-connect/
-├── embedded.py              # Shared Python SDK
-├── requirements.txt           # Python dependencies
+├── embedded.py                   # Shared Python SDK
+├── requirements.txt              # Python dependencies
 ├── connectors/
 │   ├── obsidian/
-│   │   └── export.py          # Obsidian Markdown connector
+│   │   ├── export.py             # Simple Obsidian export
+│   │   └── smart-vault/          # Full vault system
+│   │       ├── setup.py          # Interactive setup wizard
+│   │       ├── ingest.py         # Smart routing pipeline
+│   │       ├── normalize.py      # Person file normalizer
+│   │       ├── config.yaml       # Pipeline configuration
+│   │       └── vault-template/   # Starter vault structure
 │   └── json-export/
-│       └── export.py          # JSON export connector
+│       └── export.py             # JSON export connector
 └── examples/
-    ├── basic_usage.py         # Fetch and print memos
-    └── search_memos.py        # Keyword search across memos
+    ├── basic_usage.py            # Fetch and print memos
+    └── search_memos.py           # Keyword search across memos
 ```
 
 ## Security

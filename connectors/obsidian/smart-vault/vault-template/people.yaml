@@ -1,0 +1,34 @@
+# People Directory
+# ================
+# Add your team members here. The smart ingest pipeline uses this to
+# automatically detect people mentioned in your voice memos and route
+# meeting notes + action items to the right 1:1 file.
+#
+# Fields:
+#   name       - Full name (required, used for text matching)
+#   nickname   - Alternate names/shortened names (optional)
+#   team       - Team or group name (used for folder organization)
+#   role       - Job title (added to person file metadata)
+#   vault_path - Path to their 1:1 file relative to vault root
+#
+# Example:
+#
+# people:
+#   - name: "Jane Doe"
+#     nickname: ["jane", "jd"]
+#     team: "Engineering"
+#     role: "Senior Engineer"
+#     vault_path: "03_People/Engineering/Jane Doe.md"
+#
+#   - name: "Bob Wilson"
+#     nickname: ["bob"]
+#     team: "Design"
+#     role: "Lead Designer"
+#     vault_path: "03_People/Design/Bob Wilson.md"
+
+# Your name (excluded from person detection)
+me:
+  name: "Your Name"
+
+# Your team
+people: []
