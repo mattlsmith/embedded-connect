@@ -1,6 +1,8 @@
 # Embedded Connect
 
-Open-source connectors for [Embedded](https://github.com/mattlsmith/embedded) — the AI-powered voice memo app. Export your transcriptions, summaries, tags, and embeddings to the tools you already use.
+Open-source connectors for **[Embedded](https://mattlsmith.com/embedded)** — the AI-powered voice memo app. Record, transcribe, summarize, and search your voice memos with AI. Export your transcriptions, summaries, tags, and embeddings to the tools you already use.
+
+**[Download on the App Store](https://apps.apple.com/us/app/embedded-smart-voice-recorder/id6749919534)**
 
 ## Quick Start
 
@@ -375,5 +377,7 @@ MIT — see [LICENSE](LICENSE).
 
 ## Links
 
-- [Embedded App](https://github.com/mattlsmith/embedded)
+- [Embedded — App Overview](https://mattlsmith.com/embedded)
+- [Download on the App Store](https://apps.apple.com/us/app/embedded-smart-voice-recorder/id6749919534)
+- [Embedded Source Code](https://github.com/mattlsmith/embedded)
 - [Report Issues](https://github.com/mattlsmith/embedded-connect/issues)
