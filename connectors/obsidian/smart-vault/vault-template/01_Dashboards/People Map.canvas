@@ -1,0 +1,55 @@
+{
+  "nodes": [
+    {
+      "id": "center",
+      "type": "text",
+      "text": "# You\n\nDrag your team's person files onto this canvas to build your relationship map.\n\n**How to use:**\n1. Drag `.md` files from `03_People/` onto this canvas\n2. Arrange by team or relationship\n3. Draw edges between people who collaborate\n4. Color-code by team\n5. Add text cards for team goals or context",
+      "x": -200,
+      "y": -150,
+      "width": 400,
+      "height": 300,
+      "color": "1"
+    },
+    {
+      "id": "tip1",
+      "type": "text",
+      "text": "**Team 1**\n\nDrag person files here",
+      "x": -500,
+      "y": -350,
+      "width": 200,
+      "height": 100,
+      "color": "4"
+    },
+    {
+      "id": "tip2",
+      "type": "text",
+      "text": "**Team 2**\n\nDrag person files here",
+      "x": 300,
+      "y": -350,
+      "width": 200,
+      "height": 100,
+      "color": "6"
+    },
+    {
+      "id": "tip3",
+      "type": "text",
+      "text": "**Team 3**\n\nDrag person files here",
+      "x": -500,
+      "y": 250,
+      "width": 200,
+      "height": 100,
+      "color": "5"
+    },
+    {
+      "id": "tip4",
+      "type": "text",
+      "text": "**Stakeholders**\n\nDrag person files here",
+      "x": 300,
+      "y": 250,
+      "width": 200,
+      "height": 100,
+      "color": "3"
+    }
+  ],
+  "edges": []
+}

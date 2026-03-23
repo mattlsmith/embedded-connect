@@ -202,8 +202,9 @@ def format_1on1_entry(memo: dict, people: list[dict]) -> str:
         f"### {date_str} - {category}",
         f"*Embedded Voice Memo - {time_str}* {tags}",
     ]
-    if people_names:
-        lines.append(f"**People:** {people_names}")
+    if people:
+        linked_names = ", ".join(f"[[{p['name']}]]" for p in people)
+        lines.append(f"**People:** {linked_names}")
     lines.append("")
 
     if summary:
@@ -224,7 +225,7 @@ def format_1on1_entry(memo: dict, people: list[dict]) -> str:
 
 
 def format_standalone_meeting(memo: dict, people: list[dict]) -> str:
-    """Format a standalone meeting file."""
+    """Format a standalone meeting file with [[wiki-links]] to people."""
     dt = _parse_date(memo.get("created_at"))
     date_str = dt.strftime("%Y-%m-%d") if dt else "undated"
     category = memo.get("category", "Other")
@@ -242,6 +243,12 @@ def format_standalone_meeting(memo: dict, people: list[dict]) -> str:
     })
 
     parts = [fm, ""]
+
+    # People links for graph view
+    if people:
+        linked = " · ".join(f"[[{p['name']}]]" for p in people)
+        parts += [f"**People:** {linked}", ""]
+
     if memo.get("summary"):
         parts += ["## Summary", "", memo["summary"].strip(), ""]
     if memo.get("transcription"):
