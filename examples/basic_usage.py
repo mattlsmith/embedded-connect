@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Basic example: fetch and print your Gray Matter voice memos.
+Basic example: fetch and print your Embedded voice memos.
 """
 
 import getpass
@@ -8,12 +8,12 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from graymatter import GrayMatterClient
+from embedded import EmbeddedClient
 
 email = input("Email: ")
 password = getpass.getpass("Password: ")
 
-client = GrayMatterClient()
+client = EmbeddedClient()
 client.login(email, password)
 print(f"Logged in as {client.email} (uid: {client.uid})\n")
 

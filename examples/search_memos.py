@@ -11,13 +11,13 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from graymatter import GrayMatterClient
+from embedded import EmbeddedClient
 
 email = input("Email: ")
 password = getpass.getpass("Password: ")
 query = input("Search for: ").lower()
 
-client = GrayMatterClient()
+client = EmbeddedClient()
 client.login(email, password)
 
 memos = client.get_memos()

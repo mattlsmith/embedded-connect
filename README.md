@@ -1,6 +1,6 @@
-# Gray Matter Connect
+# Embedded Connect
 
-Open-source connectors for [Gray Matter](https://github.com/mattlsmith/embedded) — the AI-powered voice memo app. Export your transcriptions, summaries, tags, and embeddings to the tools you already use.
+Open-source connectors for [Embedded](https://github.com/mattlsmith/embedded) — the AI-powered voice memo app. Export your transcriptions, summaries, tags, and embeddings to the tools you already use.
 
 ## Quick Start
 
@@ -25,9 +25,9 @@ python connectors/json-export/export.py --email you@example.com --output my_memo
 ### Use the Python SDK
 
 ```python
-from graymatter import GrayMatterClient
+from embedded import EmbeddedClient
 
-client = GrayMatterClient()
+client = EmbeddedClient()
 client.login("you@example.com", "your-password")
 
 memos = client.get_memos()
@@ -37,7 +37,7 @@ for memo in memos:
 
 ## Authentication
 
-All you need is your **Gray Matter account email and password** — the same credentials you use in the iOS app. No API keys or tokens to manage.
+All you need is your **Embedded account email and password** — the same credentials you use in the iOS app. No API keys or tokens to manage.
 
 Your data is fetched through a secure API that verifies your identity and returns **only your memos**. Other users' data is never accessible.
 
@@ -48,15 +48,15 @@ Your data is fetched through a secure API that verifies your identity and return
 | **Obsidian** | Markdown files with YAML frontmatter, organized by month | `connectors/obsidian/` |
 | **JSON Export** | Full data dump as JSON — great for custom integrations | `connectors/json-export/` |
 
-## Python SDK (`graymatter.py`)
+## Python SDK (`embedded.py`)
 
 The shared client that all connectors use. You can also use it directly.
 
-### `GrayMatterClient`
+### `EmbeddedClient`
 
 | Method | Description |
 |--------|-------------|
-| `login(email, password)` | Authenticate with your Gray Matter account |
+| `login(email, password)` | Authenticate with your Embedded account |
 | `get_memos(since, category, include_embeddings)` | Fetch memos with stitched transcriptions |
 | `get_raw_chunks(since, category, include_embeddings)` | Fetch raw embedding chunks (for search/ML) |
 
@@ -103,7 +103,7 @@ for chunk in chunks:
 ### Obsidian Connector
 
 ```
---email EMAIL        Your Gray Matter account email (required)
+--email EMAIL        Your Embedded account email (required)
 --vault-path PATH    Obsidian vault directory for memos (required)
 --incremental        Only export memos created since last run
 --category CATEGORY  Filter: Meeting, Idea, ToDo, People, Budget, Other
@@ -113,7 +113,7 @@ for chunk in chunks:
 ### JSON Connector
 
 ```
---email EMAIL           Your Gray Matter account email (required)
+--email EMAIL           Your Embedded account email (required)
 --output PATH           Output JSON file path (required)
 --category CATEGORY     Filter by category
 --since TIMESTAMP       ISO timestamp — only memos after this date
@@ -126,9 +126,9 @@ for chunk in chunks:
 Create a new directory under `connectors/` and use the shared client:
 
 ```python
-from graymatter import GrayMatterClient
+from embedded import EmbeddedClient
 
-client = GrayMatterClient()
+client = EmbeddedClient()
 client.login(email, password)
 
 # Get stitched memos (transcription chunks combined)
@@ -148,7 +148,7 @@ We welcome community connectors! To add a new one:
 
 1. Fork this repo
 2. Create `connectors/your-connector/export.py`
-3. Use `graymatter.py` for auth and data fetching
+3. Use `embedded.py` for auth and data fetching
 4. Add a section to this README
 5. Open a pull request
 
@@ -166,7 +166,7 @@ Ideas for connectors:
 
 ```
 embedded-connect/
-├── graymatter.py              # Shared Python SDK
+├── embedded.py              # Shared Python SDK
 ├── requirements.txt           # Python dependencies
 ├── connectors/
 │   ├── obsidian/
@@ -192,5 +192,5 @@ MIT — see [LICENSE](LICENSE).
 
 ## Links
 
-- [Gray Matter iOS App](https://github.com/mattlsmith/embedded)
+- [Embedded App](https://github.com/mattlsmith/embedded)
 - [Report Issues](https://github.com/mattlsmith/embedded-connect/issues)

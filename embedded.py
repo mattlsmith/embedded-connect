@@ -1,12 +1,12 @@
 """
-Gray Matter Python SDK — authenticate and fetch your voice memo data.
+Embedded Python SDK — authenticate and fetch your voice memo data.
 
 This is the shared client used by all connectors. You can also use it
 directly in your own scripts:
 
-    from graymatter import GrayMatterClient
+    from embedded import EmbeddedClient
 
-    client = GrayMatterClient()
+    client = EmbeddedClient()
     client.login("you@example.com", "your-password")
     memos = client.get_memos()
 
@@ -38,13 +38,13 @@ class AuthError(Exception):
 
 
 class APIError(Exception):
-    """Raised when the Gray Matter API returns an error."""
+    """Raised when the Embedded API returns an error."""
 
 
-class GrayMatterClient:
-    """Client for the Gray Matter voice memo API.
+class EmbeddedClient:
+    """Client for the Embedded voice memo API.
 
-    Authenticates with your Gray Matter account (Firebase) and fetches
+    Authenticates with your Embedded account (Firebase) and fetches
     your data through a secure API that enforces per-user isolation.
     """
 
@@ -66,11 +66,11 @@ class GrayMatterClient:
         return self._email
 
     def login(self, email: str, password: str) -> None:
-        """Authenticate with your Gray Matter account.
+        """Authenticate with your Embedded account.
 
         Args:
-            email: Your Gray Matter account email.
-            password: Your Gray Matter account password.
+            email: Your Embedded account email.
+            password: Your Embedded account password.
 
         Raises:
             AuthError: If authentication fails.

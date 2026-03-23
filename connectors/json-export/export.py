@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Gray Matter → JSON Connector
+Embedded → JSON Connector
 
 Exports your voice memos as JSON files — useful as a starting point for
 building custom integrations, importing into other tools, or backing up
@@ -19,14 +19,14 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
-from graymatter import GrayMatterClient, AuthError, APIError
+from embedded import EmbeddedClient, AuthError, APIError
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Export Gray Matter voice memos to JSON.",
+        description="Export Embedded voice memos to JSON.",
     )
-    parser.add_argument("--email", required=True, help="Your Gray Matter account email")
+    parser.add_argument("--email", required=True, help="Your Embedded account email")
     parser.add_argument("--output", required=True, help="Output JSON file path")
     parser.add_argument("--category", help="Filter by category (Meeting, Idea, ToDo, etc.)")
     parser.add_argument("--since", help="ISO timestamp — only memos after this date")
@@ -34,9 +34,9 @@ def main():
     parser.add_argument("--raw-chunks", action="store_true", help="Export raw chunks instead of stitched memos")
     args = parser.parse_args()
 
-    password = getpass.getpass("Gray Matter password: ")
+    password = getpass.getpass("Embedded password: ")
 
-    client = GrayMatterClient()
+    client = EmbeddedClient()
     try:
         print(f"Signing in as {args.email}...")
         client.login(args.email, password)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Gray Matter → Obsidian Connector
+Embedded → Obsidian Connector
 
 Exports your voice memos as Obsidian-compatible Markdown files with
 YAML frontmatter, organized by month.
@@ -21,7 +21,7 @@ from pathlib import Path
 
 # Add repo root to path so we can import the shared client
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
-from graymatter import GrayMatterClient, AuthError, APIError
+from embedded import EmbeddedClient, AuthError, APIError
 
 LAST_EXPORT_FILE = ".last_export"
 
@@ -142,9 +142,9 @@ def write_last_export(vault_path: Path, timestamp: str):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Export Gray Matter voice memos to Obsidian Markdown.",
+        description="Export Embedded voice memos to Obsidian Markdown.",
     )
-    parser.add_argument("--email", required=True, help="Your Gray Matter account email")
+    parser.add_argument("--email", required=True, help="Your Embedded account email")
     parser.add_argument("--vault-path", required=True, help="Obsidian vault directory for memos")
     parser.add_argument("--incremental", action="store_true", help="Only export new memos since last run")
     parser.add_argument("--category", help="Filter by category (Meeting, Idea, ToDo, etc.)")
@@ -154,10 +154,10 @@ def main():
     vault_path = Path(args.vault_path).expanduser().resolve()
     vault_path.mkdir(parents=True, exist_ok=True)
 
-    password = getpass.getpass("Gray Matter password: ")
+    password = getpass.getpass("Embedded password: ")
 
     # Authenticate
-    client = GrayMatterClient()
+    client = EmbeddedClient()
     try:
         print(f"Signing in as {args.email}...")
         client.login(args.email, password)
