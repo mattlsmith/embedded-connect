@@ -47,7 +47,60 @@ Your data is fetched through a secure API that verifies your identity and return
 |-----------|-------------|------|
 | **Obsidian (Simple)** | Markdown files with YAML frontmatter, organized by month | `connectors/obsidian/export.py` |
 | **Obsidian (Smart Vault)** | Full vault system with dashboards, person routing, 1:1 files | `connectors/obsidian/smart-vault/` |
+| **Notion** | Database pages with properties, rich content, collapsible transcripts | `connectors/notion/` |
 | **JSON Export** | Full data dump as JSON — great for custom integrations | `connectors/json-export/` |
+
+---
+
+## Notion Connector
+
+Syncs your voice memos to a Notion database. Each memo becomes a page with structured properties and rich content.
+
+### Setup
+
+1. **Create a Notion integration** at [notion.so/my-integrations](https://www.notion.so/my-integrations)
+2. **Create a database** in Notion with these columns:
+
+   | Column | Type | Purpose |
+   |--------|------|---------|
+   | Title | Title | Memo title (auto-created) |
+   | Category | Select | Meeting, Idea, ToDo, etc. |
+   | Tags | Multi-select | Your custom tags |
+   | Date | Date | Memo creation date |
+   | Memo ID | Rich text | For deduplication |
+
+3. **Share the database** with your integration (click `···` → Connections → add your integration)
+4. **Copy the database ID** from the URL (the 32-char hex string)
+
+### Usage
+
+```bash
+# Set credentials (or pass as CLI flags)
+export NOTION_TOKEN=secret_xxx
+export NOTION_DATABASE_ID=abc123def456...
+
+# Dry run
+python connectors/notion/export.py --email you@example.com --dry-run
+
+# Export all memos
+python connectors/notion/export.py --email you@example.com
+
+# Incremental sync
+python connectors/notion/export.py --email you@example.com --incremental
+
+# Filter by category
+python connectors/notion/export.py --email you@example.com --category Meeting
+```
+
+### What You Get
+
+Each Notion page includes:
+- **Properties:** Title, Category (select), Tags (multi-select), Date, Memo ID
+- **Callout block** with metadata (category, chunk count, audio file)
+- **Summary section** (for ToDo memos, action items become interactive checkboxes)
+- **Collapsible transcription** (toggle block — click to expand)
+- **Deduplication** — never creates duplicate pages
+- **Rate limit handling** — automatic retry with backoff
 
 ---
 
@@ -276,7 +329,6 @@ We welcome community connectors! To add a new one:
 5. Open a pull request
 
 Ideas for connectors:
-- **Notion** — create pages in a Notion database
 - **Logseq** — export as Logseq-compatible markdown
 - **Roam Research** — daily notes format
 - **CSV** — spreadsheet-friendly export
@@ -300,6 +352,8 @@ embedded-connect/
 │   │       ├── normalize.py      # Person file normalizer
 │   │       ├── config.yaml       # Pipeline configuration
 │   │       └── vault-template/   # Starter vault structure
+│   ├── notion/
+│   │   └── export.py             # Notion database connector
 │   └── json-export/
 │       └── export.py             # JSON export connector
 └── examples/
